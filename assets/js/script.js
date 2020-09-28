@@ -1,11 +1,10 @@
-let books = [];
+const books = [];
 
 function Book(author, title, pages) {
   this.author = author;
   this.title = title;
   this.pages = pages;
   this.read = false;
-
 }
 
 function addBookToLibrary() {
@@ -13,18 +12,21 @@ function addBookToLibrary() {
 }
 
 function displayForm() {
-  let div = document.createElement('div');
-  let form = document.createElement('form');
+  const div = document.createElement('div');
+  const form = document.createElement('form');
+  const formElements = ['author', 'title', 'pages', 'read?'];
+  formElements.forEach(el => {
+    const labelName = document.createElement('label');
+    labelName.setAttribute('for', el);
+    labelName.innerHTML = el;
+    const inputName = document.createElement('input');
+    inputName.setAttribute('id', el);
+    inputName.setAttribute('type', el === 'pages' ? 'number' : el === 'read?' ? 'checkbox' : 'text');
+    inputName.setAttribute('name', el);
+    form.appendChild(labelName);
+    form.appendChild(inputName);
+  });
   form.setAttribute('class', 'form-book');
-  let labelName = document.createElement('label');
-  labelName.setAttribute('for', 'name');
-  let inputName = document.createElement('input');
-  inputName.setAttribute('id', 'name');
-  inputName.setAttribute('type', 'text');
-  inputName.setAttribute('name', 'name');
-  form.innerHTML += labelName;
-  form.innerHTML += inputName;
   div.appendChild(form);
-  document.appendChild(div);
+  document.body.appendChild(div);
 }
-
