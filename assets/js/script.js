@@ -1,4 +1,10 @@
-const books = [];
+let books = [];
+
+if(!localStorage.getItem('arrayBooks')) {
+  localStorage.arrayBooks = JSON.stringify(books);
+} else {
+  books = localStorage.getItem('arrayBooks');
+}
 
 function Book(author, title, pages) {
   this.author = author;
@@ -15,6 +21,7 @@ function addBookToLibrary() {
     el === 'read?' ? book.read = value : book[el] = value;
   });
   books.push(book);
+  localStorage.arrayBooks = JSON.stringify(books);
   console.log(books);
   return books;
 }
@@ -63,4 +70,26 @@ function displayForm() {
   document.body.appendChild(formBooks);
   const btn = document.getElementById('submit');
   btn.addEventListener('click', addBookToLibrary);
+}
+
+function displayBooks() {
+  const booksContainer = document.createElement('div');
+  booksContainer.setAttribute('class', 'row');
+  let html = '';
+  books.forEach((book) => {
+    html += `
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Title: ${book.title}</h5>
+            <p class="card-text">Author: ${book.author}</p>
+            <p class="card-text">Pages: ${book.pages}</p>
+            <a href="#" onclick="${readSwitcher()}" class="btn btn-primary">delete</a>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  booksContainer.appendChild(html);
+  document.body.appendChild(booksContainer);
 }
