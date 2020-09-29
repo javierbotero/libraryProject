@@ -11,11 +11,13 @@ function Book(author, title, pages) {
   this.title = title;
   this.pages = pages;
   this.read = false;
+
 }
 
-Book.prototype.readStatus = () => {
-  this.read = this.read ? false : true;
-}
+Book.prototype.readStatus = function() {
+  return !this.read
+};
+
 
 function addBookToLibrary() {
   const formElements = ['author', 'title', 'pages', 'read?'];
@@ -89,8 +91,8 @@ function displayBooks() {
             <h5 class="card-title">Title: ${arrayBooks[i].title}</h5>
             <p class="card-text">Author: ${arrayBooks[i].author}</p>
             <p class="card-text">Pages: ${arrayBooks[i].pages}</p>
-            <p class="card-text">Read: ${arrayBooks[i].read ? 'Read' : 'Not readed'}</p>
-            <a href="#" class="btn btn-primary" onclick="(${arrayBooks[i].readStatus()})">Change Status Read</a>
+            <p class="card-text">Read: ${arrayBooks[i].read ? 'Read' : 'Not read'}</p>
+            <a href="#" class="btn btn-primary" onclick="${arrayBooks[i].readStatus()}">Change Status Read</a>
             <a href="#" class="btn btn-primary" onclick="deleteBook(${i})">delete</a>
           </div>
         </div>
@@ -108,3 +110,7 @@ function deleteBook(index) {
   localStorage.setItem('books', JSON.stringify(books));
   library.removeChild(book);
 }
+
+// function changeStatus(index) {
+//   books[index].readStatus();
+// }
