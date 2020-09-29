@@ -1,11 +1,10 @@
 let books = [];
-let book;
 
-// if (!localStorage.getItem('books')) {
-//   localStorage.setItem('books', JSON.stringify(books));
-// } else {
-//   books = JSON.parse(localStorage.getItem('books'));
-// };
+if (!localStorage.getItem('books')) {
+  localStorage.setItem('books', JSON.stringify(books));
+} else {
+  books = JSON.parse(localStorage.getItem('books'));
+};
 
 function Book(author, title, pages) {
   this.author = author;
@@ -15,16 +14,13 @@ function Book(author, title, pages) {
 }
 
 function addBookToLibrary() {
-  event.preventDefault();
   const formElements = ['author', 'title', 'pages', 'read?'];
-  book = new Book();
+  let book = new Book();
   formElements.forEach(el => {
     const item = document.getElementById(el);
-    book.el = item.value;
+    book[el] = item.value;
   });
-  console.log(book);
   books.push(book);
-  // console.log(books);
   localStorage.setItem('books', JSON.stringify(books));
   return books;
 }
@@ -71,7 +67,7 @@ function displayForm() {
   form.setAttribute('class', 'form-book');
   formBooks.appendChild(form);
   document.body.appendChild(formBooks);
-  let btn = document.getElementById('submit');
+  const btn = document.getElementById('submit');
   btn.addEventListener('click', addBookToLibrary);
 }
 
@@ -79,21 +75,21 @@ function displayBooks() {
   const booksContainer = document.createElement('div');
   booksContainer.setAttribute('class', 'row');
   let html = '';
-  let arrayBooks = localStorage.getItem['arrayBooks'];
-  // for (let i = 0; i < arrayBooks.length; i++) {
-  //   html += `
-  //     <div class="col-sm-6">
-  //       <div class="card">
-  //         <div class="card-body">
-  //           <h5 class="card-title">Title: ${arrayBooks[i].title}</h5>
-  //           <p class="card-text">Author: ${arrayBooks[i].author}</p>
-  //           <p class="card-text">Pages: ${arrayBooks[i].pages}</p>
-  //           <a href="#" class="btn btn-primary">delete</a>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   `;
-  // }
+  let arrayBooks = JSON.parse(localStorage.getItem('books'));
+  for (let i = 0; i < arrayBooks.length; i++) {
+    html += `
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Title: ${arrayBooks[i].title}</h5>
+            <p class="card-text">Author: ${arrayBooks[i].author}</p>
+            <p class="card-text">Pages: ${arrayBooks[i].pages}</p>
+            <a href="#" class="btn btn-primary">delete</a>
+          </div>
+        </div>
+      </div>
+    `;
+  }
   booksContainer.innerHTML = html;
   document.body.appendChild(booksContainer);
 }
