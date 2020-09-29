@@ -13,6 +13,10 @@ function Book(author, title, pages) {
   this.read = false;
 }
 
+Book.prototype.readStatus = () => {
+  this.read = this.read ? false : true;
+}
+
 function addBookToLibrary() {
   const formElements = ['author', 'title', 'pages', 'read?'];
   let book = new Book();
@@ -74,17 +78,20 @@ function displayForm() {
 function displayBooks() {
   const booksContainer = document.createElement('div');
   booksContainer.setAttribute('class', 'row');
+  booksContainer.setAttribute('id', 'library');
   let html = '';
   let arrayBooks = JSON.parse(localStorage.getItem('books'));
   for (let i = 0; i < arrayBooks.length; i++) {
     html += `
-      <div class="col-sm-6">
+      <div class="col-sm-6" id="book${i}">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Title: ${arrayBooks[i].title}</h5>
             <p class="card-text">Author: ${arrayBooks[i].author}</p>
             <p class="card-text">Pages: ${arrayBooks[i].pages}</p>
-            <a href="#" class="btn btn-primary">delete</a>
+            <p class="card-text">Read: ${arrayBooks[i].read ? 'Read' : 'Not readed'}</p>
+            <a href="#" class="btn btn-primary" onclick="(${arrayBooks[i].readStatus()})">Change Status Read</a>
+            <a href="#" class="btn btn-primary" onclick="deleteBook(${i})">delete</a>
           </div>
         </div>
       </div>
@@ -92,4 +99,12 @@ function displayBooks() {
   }
   booksContainer.innerHTML = html;
   document.body.appendChild(booksContainer);
+}
+
+function deleteBook(index) {
+  books.splice(index, 1);
+  const library = document.getElementById('library');
+  const book = document.getElementById(`book${index}`);
+  localStorage.setItem('books', JSON.stringify(books));
+  library.removeChild(book);
 }
