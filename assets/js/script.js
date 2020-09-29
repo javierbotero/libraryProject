@@ -1,10 +1,11 @@
 let books = [];
+let book;
 
-if (!localStorage.getItem('arrayBooks')) {
-  localStorage.setItem('arrayBooks', JSON.stringify(books));
-} else {
-  books = JSON.parse(localStorage.getItem('arrayBooks'));
-}
+// if (!localStorage.getItem('books')) {
+//   localStorage.setItem('books', JSON.stringify(books));
+// } else {
+//   books = JSON.parse(localStorage.getItem('books'));
+// };
 
 function Book(author, title, pages) {
   this.author = author;
@@ -14,15 +15,17 @@ function Book(author, title, pages) {
 }
 
 function addBookToLibrary() {
+  event.preventDefault();
   const formElements = ['author', 'title', 'pages', 'read?'];
-  let book = new Book();
+  book = new Book();
   formElements.forEach(el => {
-    const value = document.getElementById(el);
-    book[el] = value.value;
+    const item = document.getElementById(el);
+    book.el = item.value;
   });
-  console.log(`${books} array books`);
+  console.log(book);
   books.push(book);
-  localStorage.setItem('arrayBooks', JSON.stringify(books));
+  // console.log(books);
+  localStorage.setItem('books', JSON.stringify(books));
   return books;
 }
 
@@ -68,8 +71,8 @@ function displayForm() {
   form.setAttribute('class', 'form-book');
   formBooks.appendChild(form);
   document.body.appendChild(formBooks);
-  const btn = document.getElementById('submit');
-  btn.addEventListener('onclick', addBookToLibrary());
+  let btn = document.getElementById('submit');
+  btn.addEventListener('click', addBookToLibrary);
 }
 
 function displayBooks() {
@@ -77,22 +80,20 @@ function displayBooks() {
   booksContainer.setAttribute('class', 'row');
   let html = '';
   let arrayBooks = localStorage.getItem['arrayBooks'];
-  console.log(`${arrayBooks} array local storage`);
-  console.log(arrayBooks.length);
-  for (let i = 0; i < arrayBooks.length; i++) {
-    html += `
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Title: ${arrayBooks[i].title}</h5>
-            <p class="card-text">Author: ${arrayBooks[i].author}</p>
-            <p class="card-text">Pages: ${arrayBooks[i].pages}</p>
-            <a href="#" class="btn btn-primary">delete</a>
-          </div>
-        </div>
-      </div>
-    `;
-  }
+  // for (let i = 0; i < arrayBooks.length; i++) {
+  //   html += `
+  //     <div class="col-sm-6">
+  //       <div class="card">
+  //         <div class="card-body">
+  //           <h5 class="card-title">Title: ${arrayBooks[i].title}</h5>
+  //           <p class="card-text">Author: ${arrayBooks[i].author}</p>
+  //           <p class="card-text">Pages: ${arrayBooks[i].pages}</p>
+  //           <a href="#" class="btn btn-primary">delete</a>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   `;
+  // }
   booksContainer.innerHTML = html;
   document.body.appendChild(booksContainer);
 }
