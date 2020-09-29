@@ -1,9 +1,9 @@
 let books = [];
 
 if (!localStorage.getItem('arrayBooks')) {
-  localStorage.arrayBooks = JSON.stringify(books);
+  localStorage.setItem('arrayBooks', JSON.stringify(books));
 } else {
-  books = localStorage.getItem('arrayBooks');
+  books = JSON.parse(localStorage.getItem('arrayBooks'));
 }
 
 function Book(author, title, pages) {
@@ -17,13 +17,12 @@ function addBookToLibrary() {
   const formElements = ['author', 'title', 'pages', 'read?'];
   let book = new Book();
   formElements.forEach(el => {
-    let value = document.getElementById(el).value;
-    el === 'read?' ? book.read = false : book[el] = value;
-    // book[el] = value;
+    const value = document.getElementById(el);
+    book[el] = value.value;
   });
+  console.log(`${books} array books`);
   books.push(book);
-  localStorage.arrayBooks = JSON.stringify(books);
-  console.log(books);
+  localStorage.setItem('arrayBooks', JSON.stringify(books));
   return books;
 }
 
@@ -70,15 +69,16 @@ function displayForm() {
   formBooks.appendChild(form);
   document.body.appendChild(formBooks);
   const btn = document.getElementById('submit');
-  btn.addEventListener('click', addBookToLibrary);
+  btn.addEventListener('onclick', addBookToLibrary());
 }
 
 function displayBooks() {
   const booksContainer = document.createElement('div');
   booksContainer.setAttribute('class', 'row');
   let html = '';
-  let arrayBooks = localStorage['arrayBooks'];
-  console.log(arrayBooks);
+  let arrayBooks = localStorage.getItem['arrayBooks'];
+  console.log(`${arrayBooks} array local storage`);
+  console.log(arrayBooks.length);
   for (let i = 0; i < arrayBooks.length; i++) {
     html += `
       <div class="col-sm-6">
@@ -93,6 +93,6 @@ function displayBooks() {
       </div>
     `;
   }
-  booksContainer.innerHTML += html;
+  booksContainer.innerHTML = html;
   document.body.appendChild(booksContainer);
 }
