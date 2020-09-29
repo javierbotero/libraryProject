@@ -1,6 +1,6 @@
 let books = [];
 
-if(!localStorage.getItem('arrayBooks')) {
+if (!localStorage.getItem('arrayBooks')) {
   localStorage.arrayBooks = JSON.stringify(books);
 } else {
   books = localStorage.getItem('arrayBooks');
@@ -18,7 +18,8 @@ function addBookToLibrary() {
   let book = new Book();
   formElements.forEach(el => {
     let value = document.getElementById(el).value;
-    el === 'read?' ? book.read = value : book[el] = value;
+    el === 'read?' ? book.read = false : book[el] = value;
+    // book[el] = value;
   });
   books.push(book);
   localStorage.arrayBooks = JSON.stringify(books);
@@ -76,20 +77,22 @@ function displayBooks() {
   const booksContainer = document.createElement('div');
   booksContainer.setAttribute('class', 'row');
   let html = '';
-  books.forEach((book) => {
+  let arrayBooks = localStorage['arrayBooks'];
+  console.log(arrayBooks);
+  for (let i = 0; i < arrayBooks.length; i++) {
     html += `
       <div class="col-sm-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Title: ${book.title}</h5>
-            <p class="card-text">Author: ${book.author}</p>
-            <p class="card-text">Pages: ${book.pages}</p>
-            <a href="#" onclick="${readSwitcher()}" class="btn btn-primary">delete</a>
+            <h5 class="card-title">Title: ${arrayBooks[i].title}</h5>
+            <p class="card-text">Author: ${arrayBooks[i].author}</p>
+            <p class="card-text">Pages: ${arrayBooks[i].pages}</p>
+            <a href="#" class="btn btn-primary">delete</a>
           </div>
         </div>
       </div>
     `;
-  });
-  booksContainer.appendChild(html);
+  }
+  booksContainer.innerHTML += html;
   document.body.appendChild(booksContainer);
 }
