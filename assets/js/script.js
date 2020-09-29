@@ -8,7 +8,15 @@ function Book(author, title, pages) {
 }
 
 function addBookToLibrary() {
-
+  const formElements = ['author', 'title', 'pages', 'read?'];
+  let book = new Book();
+  formElements.forEach(el => {
+    let value = document.getElementById(el).value;
+    el === 'read?' ? book.read = value : book[el] = value;
+  });
+  books.push(book);
+  console.log(books);
+  return books;
 }
 
 function type(el) {
@@ -53,5 +61,6 @@ function displayForm() {
   form.setAttribute('class', 'form-book');
   formBooks.appendChild(form);
   document.body.appendChild(formBooks);
+  const btn = document.getElementById('submit');
+  btn.addEventListener('click', addBookToLibrary);
 }
-
