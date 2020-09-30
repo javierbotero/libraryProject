@@ -14,13 +14,11 @@ function Book(author, title, pages, read) {
 }
 
 Book.prototype.readStatus = (index) => {
-  console.log(`initial: ${this.read}`);
   const read = document.getElementById(`read${index}`);
   this.read = read.innerHTML === 'Read: Read' ? 'Not Read' : 'Read';
   books[index].read = this.read;
   localStorage.setItem('books', JSON.stringify(books));
   read.innerHTML = `Read: ${this.read}`;
-  console.log(`Final: ${this.read}`);
 };
 
 function addBookToLibrary() {
@@ -29,7 +27,6 @@ function addBookToLibrary() {
   formElements.forEach(el => {
     const item = document.getElementById(el);
     book[el] = item.value;
-    console.log(item.value);
   });
   books.push(book);
   localStorage.setItem('books', JSON.stringify(books));
@@ -50,7 +47,7 @@ function type(el) {
   return result;
 }
 
-function closeForm() {
+function closeForm() { // eslint-disable-line no-unused-vars
   const form = document.getElementById('form-books');
   document.body.removeChild(form);
 }
@@ -72,7 +69,7 @@ function setType(el, inputName) {
   }
 }
 
-function displayForm() {
+function displayForm() { // eslint-disable-line no-unused-vars
   const formBooks = document.createElement('div');
   formBooks.setAttribute('id', 'form-books');
   const close = document.createElement('div');
@@ -100,22 +97,22 @@ function displayForm() {
   btn.addEventListener('click', addBookToLibrary);
 }
 
-function displayBooks() {
+function displayBooks() { // eslint-disable-line no-unused-vars
   const booksContainer = document.createElement('div');
   booksContainer.setAttribute('class', 'row');
   booksContainer.setAttribute('id', 'library');
   let html = '';
   const arrayBooks = JSON.parse(localStorage.getItem('books'));
-  for (let i = 0; i < arrayBooks.length; i++) {
+  for (let i = 0; i < arrayBooks.length; i += 1) {
     html += `
-      <div class="col-sm-6" id="book${i}">
+      <div class="col-sm-6 py-3" id="book${i}">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Title: ${arrayBooks[i].title}</h5>
             <p class="card-text">Author: ${arrayBooks[i].author}</p>
             <p class="card-text">Pages: ${arrayBooks[i].pages}</p>
             <p class="card-text" id="read${i}">Read: ${arrayBooks[i].read}</p>
-            <button type="button" class="btn btn-primary" onclick="changeStatus(${i})">Change Status Read</button>
+            <button type="button" class="btn btn-primary mb-2" onclick="changeStatus(${i})">Change Status Read</button>
             <a href="#" class="btn btn-primary" onclick="deleteBook(${i})">delete</a>
           </div>
         </div>
@@ -126,7 +123,7 @@ function displayBooks() {
   document.body.appendChild(booksContainer);
 }
 
-function deleteBook(index) {
+function deleteBook(index) { // eslint-disable-line no-unused-vars
   books.splice(index, 1);
   const library = document.getElementById('library');
   const book = document.getElementById(`book${index}`);
@@ -134,7 +131,7 @@ function deleteBook(index) {
   library.removeChild(book);
 }
 
-function changeStatus(index) {
+function changeStatus(index) { // eslint-disable-line no-unused-vars
   Object.setPrototypeOf(books[index], Book.prototype);
   books[index].readStatus(index);
 }
