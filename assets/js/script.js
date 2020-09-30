@@ -4,24 +4,22 @@ if (!localStorage.getItem('books')) {
   localStorage.setItem('books', JSON.stringify(books));
 } else {
   books = JSON.parse(localStorage.getItem('books'));
-};
+}
 
 function Book(author, title, pages) {
   this.author = author;
   this.title = title;
   this.pages = pages;
   this.read = false;
-
 }
 
-Book.prototype.readStatus = function() {
-  return !this.read
+Book.prototype.readStatus = () => {
+  this.read = !this.read;
 };
-
 
 function addBookToLibrary() {
   const formElements = ['author', 'title', 'pages', 'read?'];
-  let book = new Book();
+  const book = new Book();
   formElements.forEach(el => {
     const item = document.getElementById(el);
     book[el] = item.value;
@@ -82,8 +80,9 @@ function displayBooks() {
   booksContainer.setAttribute('class', 'row');
   booksContainer.setAttribute('id', 'library');
   let html = '';
-  let arrayBooks = JSON.parse(localStorage.getItem('books'));
+  const arrayBooks = JSON.parse(localStorage.getItem('books'));
   for (let i = 0; i < arrayBooks.length; i++) {
+    Object.setPrototypeOf(arrayBooks[i], Book.prototype);
     html += `
       <div class="col-sm-6" id="book${i}">
         <div class="card">
@@ -92,7 +91,7 @@ function displayBooks() {
             <p class="card-text">Author: ${arrayBooks[i].author}</p>
             <p class="card-text">Pages: ${arrayBooks[i].pages}</p>
             <p class="card-text">Read: ${arrayBooks[i].read ? 'Read' : 'Not read'}</p>
-            <a href="#" class="btn btn-primary" onclick="${arrayBooks[i].readStatus()}">Change Status Read</a>
+            <button type="button" class="btn btn-primary" onclick="${arrayBooks[i].readStatus}">Change Status Read</button>
             <a href="#" class="btn btn-primary" onclick="deleteBook(${i})">delete</a>
           </div>
         </div>
@@ -111,6 +110,6 @@ function deleteBook(index) {
   library.removeChild(book);
 }
 
-// function changeStatus(index) {
-//   books[index].readStatus();
-// }
+function changeStatus(index) {
+  books[index].readStatus();
+}
