@@ -4,7 +4,6 @@ if (!localStorage.getItem('books')) {
   localStorage.setItem('books', JSON.stringify(books));
 } else {
   books = JSON.parse(localStorage.getItem('books'));
-  Object.setPrototypeOf(books, Book.prototype);
 }
 
 function Book(author, title, pages) {
@@ -18,15 +17,16 @@ Book.prototype.readStatus = () => {
   console.log('method is working');
   let result = this.read = !this.read;
   console.log(result);
-  return result
+  return result;
 };
 
 function addBookToLibrary() {
-  const formElements = ['author', 'title', 'pages', 'read?'];
+  const formElements = ['author', 'title', 'pages', 'read'];
   const book = new Book();
   formElements.forEach(el => {
     const item = document.getElementById(el);
     book[el] = item.value;
+    console.log(item.value);
   });
   books.push(book);
   localStorage.setItem('books', JSON.stringify(books));
@@ -37,7 +37,7 @@ function type(el) {
   let result = '';
   if (el === 'pages') {
     result = 'number';
-  } else if (el === 'read?') {
+  } else if (el === 'read') {
     result = 'checkbox';
   } else if (el === 'submit') {
     result = 'submit';
@@ -60,7 +60,7 @@ function displayForm() {
   close.innerHTML = 'X';
   formBooks.appendChild(close);
   const form = document.createElement('form');
-  const formElements = ['author', 'title', 'pages', 'read?', 'submit'];
+  const formElements = ['author', 'title', 'pages', 'read', 'submit'];
   formElements.forEach(el => {
     const labelName = document.createElement('label');
     labelName.setAttribute('for', el);
@@ -116,5 +116,4 @@ function deleteBook(index) {
 function changeStatus(index) {
   Object.setPrototypeOf(books[index], Book.prototype);
   books[index].readStatus();
-  localStorage.setItem('books', JSON.stringify(books));
 }
