@@ -4,6 +4,7 @@ if (!localStorage.getItem('books')) {
   localStorage.setItem('books', JSON.stringify(books));
 } else {
   books = JSON.parse(localStorage.getItem('books'));
+  Object.setPrototypeOf(books, Book.prototype);
 }
 
 function Book(author, title, pages) {
@@ -14,7 +15,10 @@ function Book(author, title, pages) {
 }
 
 Book.prototype.readStatus = () => {
-  this.read = !this.read;
+  console.log('method is working');
+  let result = this.read = !this.read;
+  console.log(result);
+  return result
 };
 
 function addBookToLibrary() {
@@ -82,7 +86,6 @@ function displayBooks() {
   let html = '';
   const arrayBooks = JSON.parse(localStorage.getItem('books'));
   for (let i = 0; i < arrayBooks.length; i++) {
-    Object.setPrototypeOf(arrayBooks[i], Book.prototype);
     html += `
       <div class="col-sm-6" id="book${i}">
         <div class="card">
@@ -90,8 +93,8 @@ function displayBooks() {
             <h5 class="card-title">Title: ${arrayBooks[i].title}</h5>
             <p class="card-text">Author: ${arrayBooks[i].author}</p>
             <p class="card-text">Pages: ${arrayBooks[i].pages}</p>
-            <p class="card-text">Read: ${arrayBooks[i].read ? 'Read' : 'Not read'}</p>
-            <button type="button" class="btn btn-primary" onclick="${arrayBooks[i].readStatus}">Change Status Read</button>
+            <p class="read card-text">Read: ${arrayBooks[i].read ? 'Read' : 'Not read'}</p>
+            <button type="button" class="btn btn-primary" onclick="changeStatus(${i})">Change Status Read</button>
             <a href="#" class="btn btn-primary" onclick="deleteBook(${i})">delete</a>
           </div>
         </div>
@@ -111,5 +114,7 @@ function deleteBook(index) {
 }
 
 function changeStatus(index) {
+  Object.setPrototypeOf(books[index], Book.prototype);
   books[index].readStatus();
+  localStorage.setItem('books', JSON.stringify(books));
 }
