@@ -6,18 +6,21 @@ if (!localStorage.getItem('books')) {
   books = JSON.parse(localStorage.getItem('books'));
 }
 
-function Book(author, title, pages) {
+function Book(author, title, pages, read) {
   this.author = author;
   this.title = title;
   this.pages = pages;
-  this.read = false;
+  this.read = read;
 }
 
-Book.prototype.readStatus = () => {
-  console.log('method is working');
-  let result = this.read = !this.read;
-  console.log(result);
-  return result;
+Book.prototype.readStatus = (index) => {
+  console.log(`initial: ${this.read}`);
+  const read = document.getElementById(`read${index}`);
+  this.read = read.innerHTML === 'Read: Read' ? 'Not Read' : 'Read';
+  books[index].read = this.read;
+  localStorage.setItem('books', JSON.stringify(books));
+  read.innerHTML = `Read: ${this.read}`;
+  console.log(`Final: ${this.read}`);
 };
 
 function addBookToLibrary() {
@@ -52,6 +55,23 @@ function closeForm() {
   document.body.removeChild(form);
 }
 
+function valueSelect(el, inputName) {
+  if (el === 'read') {
+    ['Read', 'Not Read'].forEach((option) => {
+      const selectOption = document.createElement('option');
+      selectOption.setAttribute('value', option);
+      selectOption.innerHTML = option;
+      inputName.appendChild(selectOption);
+    });
+  }
+}
+
+function setType(el, inputName) {
+  if (el !== 'read') {
+    inputName.setAttribute('type', type(el));
+  }
+}
+
 function displayForm() {
   const formBooks = document.createElement('div');
   formBooks.setAttribute('id', 'form-books');
@@ -65,10 +85,11 @@ function displayForm() {
     const labelName = document.createElement('label');
     labelName.setAttribute('for', el);
     labelName.innerHTML = el;
-    const inputName = document.createElement('input');
+    const inputName = document.createElement(el !== 'read' ? 'input' : 'select');
     inputName.setAttribute('id', el);
-    inputName.setAttribute('type', type(el));
+    setType(el, inputName);
     inputName.setAttribute('name', el);
+    valueSelect(el, inputName);
     form.appendChild(labelName);
     form.appendChild(inputName);
   });
@@ -93,7 +114,7 @@ function displayBooks() {
             <h5 class="card-title">Title: ${arrayBooks[i].title}</h5>
             <p class="card-text">Author: ${arrayBooks[i].author}</p>
             <p class="card-text">Pages: ${arrayBooks[i].pages}</p>
-            <p class="read card-text">Read: ${arrayBooks[i].read ? 'Read' : 'Not read'}</p>
+            <p class="card-text" id="read${i}">Read: ${arrayBooks[i].read}</p>
             <button type="button" class="btn btn-primary" onclick="changeStatus(${i})">Change Status Read</button>
             <a href="#" class="btn btn-primary" onclick="deleteBook(${i})">delete</a>
           </div>
@@ -115,5 +136,5 @@ function deleteBook(index) {
 
 function changeStatus(index) {
   Object.setPrototypeOf(books[index], Book.prototype);
-  books[index].readStatus();
+  books[index].readStatus(index);
 }
