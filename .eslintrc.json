@@ -20,6 +20,7 @@
     "dist/",
     "build/",
     "node_module/",
-    "package*"
+    "package-lock.json",
+    "package.json"
   ]
 }
