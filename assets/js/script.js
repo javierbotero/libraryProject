@@ -125,10 +125,13 @@ function displayBooks() { // eslint-disable-line no-unused-vars
 
 function deleteBook(index) { // eslint-disable-line no-unused-vars
   books.splice(index, 1);
+  localStorage.setItem('books', JSON.stringify(books));
   const library = document.getElementById('library');
   const book = document.getElementById(`book${index}`);
-  localStorage.setItem('books', JSON.stringify(books));
   library.removeChild(book);
+  // eslint-disable-next-line no-restricted-globals
+  location.reload();
+  document.getElementById(`book${index - 1}`).scrollIntoView();
 }
 
 function changeStatus(index) { // eslint-disable-line no-unused-vars
