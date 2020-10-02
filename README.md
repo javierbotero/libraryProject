@@ -1,6 +1,4 @@
-# README
-
-**Library**
+# Library
 
 This project is a "Library" where users can store books using inputs from a form where details like author, title, number of pages, and whether the book is read or not, are properties of the book.
 
