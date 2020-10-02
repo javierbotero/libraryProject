@@ -2,6 +2,9 @@
 
 This project is a "Library" where users can store books using inputs from a form where details like author, title, number of pages, and whether the book is read or not, are properties of the book.
 
+## Live preview
+
+[Library Project](https://rawcdn.githack.com/javierbotero/libraryProject/f492a07cd421199a1d75d2cc61f2ebfd1552d33b/index.html?author=Javier&title=title&pages=3&read=Not+Read&submit=Submit)
 
 ## Built With
 
