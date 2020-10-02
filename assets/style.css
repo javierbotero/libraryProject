@@ -1,0 +1,16 @@
+#form-books {
+  position: absolute;
+  top: 5%;
+  left: 20%;
+  background-color: rgb(1 105 217);
+  color: white;
+  margin: 0 auto;
+  padding: 2em;
+  border-radius: 5%;
+}
+
+#form-books form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
